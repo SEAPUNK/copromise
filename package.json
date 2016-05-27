@@ -1,6 +1,6 @@
 {
   "name": "mini-copromise",
-  "version": "0.3.0-beta1",
+  "version": "1.0.0",
   "description": "Minimal Promise-based coroutines. Performant, with minimal fluff.",
   "main": "index.js",
   "scripts": {
