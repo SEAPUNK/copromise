@@ -10,6 +10,18 @@ import copromise from './'
 const coroutine = function * (a, b) {
   let isCaught = false
 
+  if (a === 'hardfail1') {
+    yield Promise.reject(new Error('hardfail - 1'))
+  }
+
+  if (a === 'hardfail2') {
+    return Promise.reject(new Error('hardfail - 2'))
+  }
+
+  if (a === 'hardfail3') {
+    throw new Error('hardfail - 3')
+  }
+
   const retV = yield 'a'
   if (retV !== 'a') {
     throw new Error('retV is not a!')
@@ -67,4 +79,43 @@ test('use bluebird as promise', async (t) => {
   t.is(copromise.Promise, bluebird)
   const retval = await copromise(coroutine, 1, 2)
   t.deepEqual(retval, [1, 2, false])
+})
+
+test('rejection - yield rejected promise', async (t) => {
+  t.plan(1)
+
+  try {
+    await copromise(coroutine, 'hardfail1', 2)
+  } catch (err) {
+    t.is(String(err), 'Error: hardfail - 1')
+    return
+  }
+
+  throw new Error('Copromise did not throw')
+})
+
+test('rejection - return rejected promise', async (t) => {
+  t.plan(1)
+
+  try {
+    await copromise(coroutine, 'hardfail2', 2)
+  } catch (err) {
+    t.is(String(err), 'Error: hardfail - 2')
+    return
+  }
+
+  throw new Error('Copromise did not throw')
+})
+
+test('rejection - throw error', async (t) => {
+  t.plan(1)
+
+  try {
+    await copromise(coroutine, 'hardfail3', 2)
+  } catch (err) {
+    t.is(String(err), 'Error: hardfail - 3')
+    return
+  }
+
+  throw new Error('Copromise did not throw')
 })
