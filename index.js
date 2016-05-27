@@ -20,12 +20,9 @@ function spawn (coroutine) {
 }
 
 function copromise (coroutine) {
-  return spawn(
-    coroutine.apply(
-      this,
-      Array.prototype.slice.call(arguments, 1)
-    )
-  )
+  return function () {
+    return spawn(coroutine.apply(this, arguments))
+  }
 }
 
 copromise.Promise = Promise

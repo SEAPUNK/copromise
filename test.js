@@ -7,7 +7,7 @@ import bluebird from 'bluebird'
 
 import copromise from './'
 
-const coroutine = function * (a, b) {
+const genfn = function * (a, b) {
   let isCaught = false
 
   if (a === 'hardfail1') {
@@ -53,20 +53,23 @@ const coroutine = function * (a, b) {
 
 test('normal, non-caught', async (t) => {
   t.plan(1)
-  const retval = await copromise(coroutine, 1, 2)
+  const coroutine = copromise(genfn)
+  const retval = await coroutine(1, 2)
   t.deepEqual(retval, [1, 2, false])
 })
 
 test('normal, caught', async (t) => {
   t.plan(1)
-  const retval = await copromise(coroutine, 'fail', 2)
+  const coroutine = copromise(genfn)
+  const retval = await coroutine('fail', 2)
   t.deepEqual(retval, ['fail', 2, true])
 })
 
 test('stopped early, with 100ms delay', async (t) => {
   t.plan(2)
+  const coroutine = copromise(genfn)
   const startTime = Date.now()
-  const retval = await copromise(coroutine, 1, 'stop')
+  const retval = await coroutine(1, 'stop')
   t.is(retval, 'ok')
   t.is(true, (
     Date.now() - startTime > 100
@@ -77,15 +80,18 @@ test('use bluebird as promise', async (t) => {
   t.plan(2)
   copromise.Promise = bluebird
   t.is(copromise.Promise, bluebird)
-  const retval = await copromise(coroutine, 1, 2)
+  const coroutine = copromise(genfn)
+  const retval = await coroutine(1, 2)
   t.deepEqual(retval, [1, 2, false])
 })
 
 test('rejection - yield rejected promise', async (t) => {
   t.plan(1)
 
+  const coroutine = copromise(genfn)
+
   try {
-    await copromise(coroutine, 'hardfail1', 2)
+    await coroutine('hardfail1', 2)
   } catch (err) {
     t.is(String(err), 'Error: hardfail - 1')
     return
@@ -97,8 +103,10 @@ test('rejection - yield rejected promise', async (t) => {
 test('rejection - return rejected promise', async (t) => {
   t.plan(1)
 
+  const coroutine = copromise(genfn)
+
   try {
-    await copromise(coroutine, 'hardfail2', 2)
+    await coroutine('hardfail2', 2)
   } catch (err) {
     t.is(String(err), 'Error: hardfail - 2')
     return
@@ -110,8 +118,10 @@ test('rejection - return rejected promise', async (t) => {
 test('rejection - throw error', async (t) => {
   t.plan(1)
 
+  const coroutine = copromise(genfn)
+
   try {
-    await copromise(coroutine, 'hardfail3', 2)
+    await coroutine('hardfail3', 2)
   } catch (err) {
     t.is(String(err), 'Error: hardfail - 3')
     return
@@ -125,8 +135,10 @@ test('use non-promise lib as promise', async (t) => {
 
   copromise.Promise = null
 
+  const coroutine = copromise(genfn)
+
   try {
-    await copromise(coroutine, 1, 2)
+    await coroutine(1, 2)
   } catch (err) {
     t.is(String(err), 'TypeError: copromise.Promise is not a constructor')
     return
