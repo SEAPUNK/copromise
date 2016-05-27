@@ -1,17 +1,33 @@
+`mini-copromise`
+---
 
+A tinier Promise-based coroutine. Based off of [`copromise`](https://github.com/deanlandolt/copromise)
 
-A `copromise` represents the eventual value of a coroutine. A coroutine is a generator function where the `yield` keyword is used to suspend execution to wait on a future value, allowing linear control flow logic for asynchronous code.
+* 629 bytes uncompressed
+* 500 bytes minified with uglify-js 2.6.2
+* 283 bytes minified with uglify-js 2.6.2, and compressed with gzip 1.8
 
-## `yield`
+`npm install mini-copromise`
 
-Any kind of value can be yielded, either a promise or non-promise value. In other words, `yield` is very much like the `when` method exposed by some popular promise libraries. Internally, every yielded value is wrapped with `Promise.resolve`, and when this promise is fulfilled its value will be returned as the result of the `yield` expression. If an exeption is thrown or this promise is rejected the `yield` expression will throw in the coroutine, which can be caught with the standard `try`/`catch` syntax.
+```js
+import copromise from 'mini-copromise'
 
+copromise.Promise = bluebird // Override which Promise copromise uses
 
-## `return`
+function * generatorFunction (input) {
+  yield doSomeThings()
+  try {
+      yield doSomeOtherThings()
+  } catch (err) {
+      yield someFailureHandler()
+  }
+  return 'nice' + input
+}
 
-Running a coroutine returns a promise which will resolve to the return value of the coroutine, if any. An unhandled exeption in the coroutine will result in a rejected promise.
+copromise(generatorFunction, 2).then((value) => {
+  console.log('Copromise success', value)
+}).catch((err) => {
+  console.log('An error occured', err)
+})
 
-
-## `yield*`
-
-The `yield*` operator can be used to invoke to another coroutine. The result of the yield* expression (if successful) will be the value returned from the delegated coroutine. If this value is a promise it will be resolved before execution resumes in the originating coroutine.
+```

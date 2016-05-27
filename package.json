@@ -1,26 +1,40 @@
 {
-	"name": "copromise",
-	"version": "0.2.0",
-	"description": "Promise-based adaption of co stripped bare, with a some added conveniences",
-	"main": "index.js",
-	"scripts": {
-		"test": "node --harmony test"
-	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/deanlandolt/copromise"
-	},
-	"keywords": [
-		"async",
-		"flow",
-		"coroutine",
-		"generator",
-		"promise"
-	],
-	"author": "Dean Landolt <dean@deanlandolt.com> (http://deanlandolt.com/)",
-	"license": "MIT",
-	"bugs": {
-		"url": "https://github.com/deanlandolt/copromise/issues"
-	},
-	"homepage": "https://github.com/deanlandolt/copromise"
+  "name": "mini-copromise",
+  "version": "0.3.0-beta1",
+  "description": "Minimal Promise-based coroutines. Performant, with minimal fluff.",
+  "main": "index.js",
+  "scripts": {
+    "test": "standard && ava"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SEAPUNK/mini-copromise"
+  },
+  "keywords": [
+    "async",
+    "flow",
+    "coroutine",
+    "generator",
+    "promise",
+    "performance"
+  ],
+  "author": "Dean Landolt <dean@deanlandolt.com> (http://deanlandolt.com/)",
+  "contributors": [
+    "ivan k <ivan@sq10.net>"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SEAPUNK/mini-copromise/issues"
+  },
+  "homepage": "https://github.com/SEAPUNK/mini-copromise",
+  "devDependencies": {
+    "ava": "^0.15.1",
+    "babel-eslint": "^6.0.4",
+    "bluebird": "^3.4.0",
+    "delay": "^1.3.1",
+    "standard": "^7.1.1"
+  },
+  "standard": {
+    "parser": "babel-eslint"
+  }
 }

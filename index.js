@@ -1,54 +1,33 @@
-//
-// core coroutine runner
-//
-function spawn(coroutine) {
-	return new copromise.Promise(function (resolve, reject) {
-		(function next(value, exception) {
-			var result
-			try {
-				result = exception ? coroutine.throw(value) : coroutine.next(value)
-			}
-			catch (error) {
-				return reject(error)
-			}
-			if (result.done)
-				return resolve(result.value)
+'use strict'
 
-			Promise.resolve(result.value).then(next, function(error) {
-				next(error, true)
-			})
-		})()
-	})
+function spawn (coroutine) {
+  return new copromise.Promise(function (resolve, reject) {
+    (function next (val, err) {
+      var result
+      try {
+        result = err ? coroutine.throw(err) : coroutine.next(val)
+      } catch (err) {
+        return reject(err)
+      }
+
+      if (result.done) return resolve(result.value)
+
+      Promise.resolve(result.value).then(next).catch(function (err) {
+        next(null, err)
+      })
+    })()
+  })
 }
 
-//
-// create an async function from provided coroutine (generator factory)
-//
-function copromise(coroutine) {
-	return function () {
-		return spawn(coroutine.apply(this, arguments))
-	}
+function copromise (coroutine) {
+  return spawn(
+    coroutine.apply(
+      this,
+      Array.prototype.slice.call(arguments, 1)
+    )
+  )
 }
 
-//
-// allow overriding of promise implementation for subclassing
-//
 copromise.Promise = Promise
-
-//
-// rethrow error in next event turn
-//
-function raise(error) {
-	setImmediate(function() {
-		throw error
-	})
-}
-
-//
-// run coroutine and raise exception on failure
-//
-copromise.run = function run(coroutine) {
-	return spawn(coroutine()).catch(raise)
-}
 
 module.exports = copromise
