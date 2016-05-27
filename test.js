@@ -119,3 +119,18 @@ test('rejection - throw error', async (t) => {
 
   throw new Error('Copromise did not throw')
 })
+
+test('use non-promise lib as promise', async (t) => {
+  t.plan(1)
+
+  copromise.Promise = null
+
+  try {
+    await copromise(coroutine, 1, 2)
+  } catch (err) {
+    t.is(String(err), 'TypeError: copromise.Promise is not a constructor')
+    return
+  }
+
+  throw new Error('Copromise did not throw')
+})
