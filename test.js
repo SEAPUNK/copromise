@@ -3,7 +3,6 @@
 import test from 'ava'
 
 import delay from 'delay'
-import bluebird from 'bluebird'
 
 import copromise from './'
 
