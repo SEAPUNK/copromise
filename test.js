@@ -76,15 +76,6 @@ test('stopped early, with 100ms delay', async (t) => {
   ))
 })
 
-test('use bluebird as promise', async (t) => {
-  t.plan(2)
-  copromise.Promise = bluebird
-  t.is(copromise.Promise, bluebird)
-  const coroutine = copromise(genfn)
-  const retval = await coroutine(1, 2)
-  t.deepEqual(retval, [1, 2, false])
-})
-
 test('rejection - yield rejected promise', async (t) => {
   t.plan(1)
 
@@ -130,19 +121,3 @@ test('rejection - throw error', async (t) => {
   throw new Error('Copromise did not throw')
 })
 
-test('use non-promise lib as promise', async (t) => {
-  t.plan(1)
-
-  copromise.Promise = null
-
-  const coroutine = copromise(genfn)
-
-  try {
-    await coroutine(1, 2)
-  } catch (err) {
-    t.is(String(err), 'TypeError: copromise.Promise is not a constructor')
-    return
-  }
-
-  throw new Error('Copromise did not throw')
-})

@@ -1,7 +1,7 @@
 'use strict'
 
 function spawn (coroutine) {
-  return new copromise.Promise(function (resolve, reject) {
+  return new Promise(function (resolve, reject) {
     (function next (val, err) {
       var result
       try {
@@ -24,7 +24,5 @@ function copromise (coroutine) {
     return spawn(coroutine.apply(this, arguments))
   }
 }
-
-copromise.Promise = Promise
 
 module.exports = copromise
