@@ -1,4 +1,10 @@
-`mini-copromise`
+mini-copromise
+---
+
+![project status](https://img.shields.io/badge/status-replaced-a260e5.svg?style=flat-square)
+
+**Replaced with [`minico`](https://github.com/SEAPUNK/minico): It's the same thing.**
+
 ---
 
 A tinier Promise-based coroutine. Based off of [`copromise`](https://github.com/deanlandolt/copromise)

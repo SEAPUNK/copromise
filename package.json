@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/SEAPUNK/mini-copromise"
+    "url": "https://github.com/skewten-archive/mini-copromise"
   },
   "keywords": [
     "async",
@@ -24,9 +24,9 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/SEAPUNK/mini-copromise/issues"
+    "url": "https://github.com/skewten-archive/mini-copromise/issues"
   },
-  "homepage": "https://github.com/SEAPUNK/mini-copromise",
+  "homepage": "https://github.com/skewten-archive/mini-copromise",
   "devDependencies": {
     "ava": "^0.16.0",
     "babel-eslint": "^7.0.0",
